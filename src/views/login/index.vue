@@ -2,8 +2,11 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
+      <!-- <div class="title-container">
         <h3 class="title">Login Form</h3>
+      </div> -->
+      <div class="logo-container">
+        <img src="../../assets/zv_logo.png" class="logo">
       </div>
 
       <el-form-item prop="username">
@@ -212,15 +215,26 @@ $light_gray:#eee;
     display: inline-block;
   }
 
-  .title-container {
-    position: relative;
+  // .title-container {
+  //   position: relative;
 
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+  //   .title {
+  //     font-size: 26px;
+  //     color: $light_gray;
+  //     margin: 0px auto 40px auto;
+  //     text-align: center;
+  //     font-weight: bold;
+  //   }
+  // }
+  .logo-container {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -30px);
+    width: 200px;
+    height: 200px;
+    .logo {
+      width: 200px;
+      height: 200px;
     }
   }
 

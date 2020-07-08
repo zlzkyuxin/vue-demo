@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">{{ name }}, 欢迎使用环保清单打印系统！</div>
   </div>
 </template>
 
