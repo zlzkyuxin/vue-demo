@@ -6,8 +6,11 @@
         <h3 class="title">Login Form</h3>
       </div> -->
       <div class="logo-container">
-        <img src="../../assets/zv_logo.png" class="logo">
+        <!-- <img src="../../assets/zv_logo.png" class="logo"> -->
+        <div class="logo" />
+        <h1>环保清单打印系统</h1>
       </div>
+      <div style="both:clear" />
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -227,15 +230,27 @@ $light_gray:#eee;
   //   }
   // }
   .logo-container {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, -30px);
-    width: 200px;
-    height: 200px;
+    // position: relative;
+    // left: 50%;
+    // transform: translate(27%, -20px);
+    // width: 300px;
+    // height: 250px;
     .logo {
       width: 200px;
       height: 200px;
+      background: url('../../assets/zv_logo.png') no-repeat;
+      background-size: 100% 100%;
+      margin: -20px auto 0;
     }
+    h1 {
+      color: white;
+      text-align: center;
+    }
+  }
+  .login-container::after {
+    content: "";
+    display: block;
+    clear: both;
   }
 
   .show-pwd {

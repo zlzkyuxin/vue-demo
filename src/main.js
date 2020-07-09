@@ -15,6 +15,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import axios from 'axios'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -28,10 +29,21 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
+router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  // if (to.meta.title) {
+  //   document.title = to.meta.title
+  // }
+  document.title = '环保清单打印系统'
+  next()
+})
+
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 

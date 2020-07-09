@@ -148,22 +148,22 @@ export const constantRoutes = [
   {
     path: '/xxxx',
     component: Layout,
-    meta:
-    {
-      title: '功能块',
-      icon: 'nested'
-    },
+    // meta:
+    // {
+    //   title: '功能块',
+    //   icon: 'nested'
+    // },
     children: [
       {
         path: '/print',
         component: () => import('@/views/print/printIndex'),
         meta: { title: '打印', icon: 'link' }
       },
-      {
-        path: '/menu2',
-        component: () => import('@/views/nested/menu1/menu1-3'),
-        meta: { title: '功能2', icon: 'link' }
-      }
+      // {
+      //   path: '/menu2',
+      //   component: () => import('@/views/nested/menu1/menu1-3'),
+      //   meta: { title: '功能2', icon: 'link' }
+      // }
     ]
   },
 
