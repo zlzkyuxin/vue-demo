@@ -123,24 +123,28 @@ export default {
     },
     // 批量打印
     pdfPrint() {
-      if (!this.check()) { return }
-      this.$axios({
-        methods: 'get',
-        url: 'https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf',
-        responseType: 'blob'
-      }).then((response) => {
-        console.log(response)
-        // const url = window.URL.createObjectURL(new Blob([response.data],{type:"application/pdf"}))
-        // console.log(url)
-        var newWin = window.open('https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf')
-        newWin.document.close()
-        newWin.focus()
-        newWin.print()
-        // var iframe = document.createElement('iframe')
-        // iframe.body.innerHTML = '2131231'
-        // iframe.focus()
-        // iframe.print()
-      })
+      // if (!this.check()) { return }
+      // this.$axios({
+      //   methods: 'get',
+      //   url: 'https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf',
+      //   responseType: 'blob'
+      // }).then((response) => {
+      //   console.log(response)
+      //   var newWin = window.open('https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf')
+      //   newWin.document.close()
+      //   newWin.focus()
+      //   newWin.print()
+      // })
+
+
+      // this.$router.push({ path: '/detail' })
+
+      const params = { id: 'val' };
+      let routeData = this.$router.resolve({
+        name: "Detail",
+        query: params,
+      });
+      window.open(routeData.href, '_blank');
     },
     // 批量下载
     downloading() {

@@ -146,7 +146,7 @@ export const constantRoutes = [
   //   ]
   // },
   {
-    path: '/xxxx',
+    path: '/utils',
     component: Layout,
     // meta:
     // {
@@ -165,6 +165,12 @@ export const constantRoutes = [
       //   meta: { title: '功能2', icon: 'link' }
       // }
     ]
+  },
+  {
+    path: '/detail',
+    name: 'Detail',
+    component: () => import('@/views/print/detail'),
+    hidden: true
   },
 
   // 404 page must be placed at the end !!!
