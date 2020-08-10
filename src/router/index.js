@@ -158,7 +158,7 @@ export const constantRoutes = [
         path: '/print',
         component: () => import('@/views/print/printIndex'),
         meta: { title: '打印', icon: 'link' }
-      },
+      }
       // {
       //   path: '/menu2',
       //   component: () => import('@/views/nested/menu1/menu1-3'),

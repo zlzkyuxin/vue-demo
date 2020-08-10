@@ -60,7 +60,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
@@ -236,11 +235,11 @@ $light_gray:#eee;
     // width: 300px;
     // height: 250px;
     .logo {
-      width: 200px;
-      height: 200px;
+      width: 160px;
+      height: 160px;
       background: url('../../assets/zv_logo.png') no-repeat;
       background-size: 100% 100%;
-      margin: -20px auto 0;
+      margin: -40px auto 0;
     }
     h1 {
       color: white;

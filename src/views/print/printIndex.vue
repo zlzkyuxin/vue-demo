@@ -136,15 +136,11 @@ export default {
       //   newWin.print()
       // })
 
-
       // this.$router.push({ path: '/detail' })
 
-      const params = { id: 'val' };
-      let routeData = this.$router.resolve({
-        name: "Detail",
-        query: params,
-      });
-      window.open(routeData.href, '_blank');
+      const params = { id: 'val' }
+      const routeData = this.$router.resolve({ name: 'Detail', query: params })
+      window.open(routeData.href, '_blank')
     },
     // 批量下载
     downloading() {
