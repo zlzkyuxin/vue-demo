@@ -166,12 +166,12 @@ export const constantRoutes = [
       // }
     ]
   },
-  {
-    path: '/detail',
-    name: 'Detail',
-    component: () => import('@/views/print/detail'),
-    hidden: true
-  },
+  // {
+  //   path: '/detail',
+  //   name: 'Detail',
+  //   component: () => import('@/views/print/detail'),
+  //   hidden: true
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

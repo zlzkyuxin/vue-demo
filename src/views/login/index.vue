@@ -77,7 +77,7 @@
 import { validUsername } from '@/utils/validate'
 export default {
   name: 'Login',
-  data () {
+  data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
@@ -115,7 +115,7 @@ export default {
     }
   },
   methods: {
-    showPwd () {
+    showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -125,12 +125,13 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin () {
+    handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+            // this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
@@ -252,7 +253,7 @@ $light_gray: #eee;
     .logo {
       width: 160px;
       height: 160px;
-      background: url("../../assets/zv_logo.png") no-repeat;
+      background: url('../../assets/zv_logo.png') no-repeat;
       background-size: 100% 100%;
       margin: -40px auto 0;
     }
@@ -262,7 +263,7 @@ $light_gray: #eee;
     }
   }
   .login-container::after {
-    content: "";
+    content: '';
     display: block;
     clear: both;
   }

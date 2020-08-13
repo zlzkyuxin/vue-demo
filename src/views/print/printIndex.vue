@@ -22,48 +22,7 @@
           v-model="form.standards"
           label="G6"
         >国六</el-radio>
-        <!-- <el-select
-          v-model="form.standards"
-          placeholder="请选择活动区域"
-        >
-          <el-option
-            label="国五(声明五行)"
-            value="国五(声明五行)"
-          />
-          <el-option
-            label="国五(声明六行)"
-            value="国五(声明六行)"
-          />
-          <el-option
-            label="国六"
-            value="国六"
-          />
-        </el-select> -->
       </el-form-item>
-
-      <!-- <el-form-item label="选择打印模版">
-        <el-select
-          v-model="form.template"
-          placeholder="请选择活动区域"
-        >
-          <el-option
-            label="模板一"
-            value="template1"
-          />
-          <el-option
-            label="模板二"
-            value="template2"
-          />
-          <el-option
-            label="模板三"
-            value="template3"
-          />
-          <el-option
-            label="模板四"
-            value="template4"
-          />
-        </el-select>
-      </el-form-item> -->
 
       <el-form-item
         label="选择VIN报送表"
@@ -168,15 +127,17 @@
 </template>
 
 <script>
-import { pdf, print } from '@/api/print'
+// import { pdf, print } from '@/api/print'
 import { getToken } from '@/utils/auth'
 export default {
-  data () {
+  data() {
     return {
-      headers: { // 请求头
+      headers: {
+        // 请求头
         // authorization:'Bearer '+Cookies.get('authorization'),
         appKey: 'PC'
       },
+      baseurl: process.env.VUE_APP_BASE_API,
       limit: 1,
       state: '',
       value: '',
@@ -193,17 +154,17 @@ export default {
     }
   },
   watch: {
-    'form.vinStart' (newVal) {
+    'form.vinStart'(newVal) {
       if (newVal) {
         this.form.vinAll = '0'
       }
     },
-    'form.vinEnd' (newVal) {
+    'form.vinEnd'(newVal) {
       if (newVal) {
         this.form.vinAll = '0'
       }
     },
-    'form.vinAll' (newVal) {
+    'form.vinAll'(newVal) {
       if (newVal === '1') {
         this.form.vinStart = ''
         this.form.vinEnd = ''
@@ -211,7 +172,7 @@ export default {
     }
   },
   methods: {
-    exceedFunc () {
+    exceedFunc() {
       this.$message({
         showClose: true,
         message: '警告，仅允许上传一个附件',
@@ -219,13 +180,13 @@ export default {
       })
     },
     //  文件上传
-    fileUpload (file, fileList) {
+    fileUpload(file, fileList) {
       this.form.sysAttachments = file.raw
       console.log(file, '上传的文件')
       // console.log(fileList, '上传的文件list')
     },
     //  文件上传
-    fileUpload1 (file, fileList) {
+    fileUpload1(file, fileList) {
       this.form.sysAttachments1 = file.raw
       console.log(file, '上传的文件')
       // console.log(fileList, '上传的文件list')
@@ -246,141 +207,14 @@ export default {
     // },
 
     // 批量打印
-    pdfPrint () {
-      // if (!this.check()) { return }
-      // this.$axios({
-      //   methods: 'get',
-      //   url: 'https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf',
-      //   responseType: 'blob'
-      // }).then((response) => {
-      //   console.log(response)
-      //   var newWin = window.open('https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf')
-      //   newWin.document.close()
-      //   newWin.focus()
-      //   newWin.print()
-      // })
-
-      // this.$router.push({ path: '/detail' })
-
-      // const params = { id: 'val' }
-      // const routeData = this.$router.resolve({ name: 'Detail', query: params })
-      // window.open(routeData.href, '_blank')
-
-      if (!this.check()) { return }
-      this.loading = true
-      let formData = new FormData()
-      formData.append('tempFile', this.form.sysAttachments1)
-      formData.append('vinFile', this.form.sysAttachments)
-      formData.append('allVin', this.form.vinAll === '1' ? true : false)
-      formData.append('stage', this.form.standards)
-
-      if (this.form.vinAll !== '1') {
-        formData.append('vinFrom', this.form.vinStart)
-        formData.append('vinTo', this.form.vinEnd)
-      }
-      console.log(formData, '传给后台的数据')
-
-      // print(formData).then(response => {
-      //   this.loading = false
-      //   console.log(response, '返回的数据')
-      // }).catch(err => {
-      //   this.loading = false
-      // })
-
-      this.$axios({
-        method: 'post',
-        url: 'http://10.33.3.45:8080/v1/epp/print',
-        data: formData,
-        headers: {
-          Authorization: getToken()
-        },
-        // responseType: 'blob'
-      }).then((response) => {
-        this.loading = false
-        console.log(response, '打印接口返回')
-        debugger
-        const content = response.data
-        if (content.code === 'F.999') {
-          this.$message.error(content.msg)
-        } else {
-          const blob = new Blob([content]) // 构造一个blob对象来处理数据
-          const fileName = new Date().getTime() + '.docx' // 导出文件名
-          // 对于<a>标签，只有 Firefox 和 Chrome（内核） 支持 download 属性
-          // IE10以上支持blob但是依然不支持download
-          if ('download' in document.createElement('a')) { // 支持a标签download的浏览器
-            const link = document.createElement('a') // 创建a标签
-            link.download = fileName // a标签添加属性
-            link.style.display = 'none'
-            link.href = URL.createObjectURL(blob)
-            console.log(link.href, '下载文件地址为')
-            document.body.appendChild(link)
-            link.click() // 执行下载
-            URL.revokeObjectURL(link.href) // 释放url
-            document.body.removeChild(link) // 释放标签
-            window.open(link.href)
-          } else { // 其他浏览器
-            navigator.msSaveBlob(blob, fileName)
-          }
-        }
-      }).catch(error => {
-        this.loading = false
-        console.log(error)
-      })
-
+    pdfPrint() {
+      this.postFile(true)
     },
     // 批量下载
-    downloading () {
-      if (!this.check()) { return }
-      this.loading = true
-      let formData = new FormData()
-      formData.append('tempFile', this.form.sysAttachments1)
-      formData.append('vinFile', this.form.sysAttachments)
-      formData.append('allVin', this.form.vinAll === '1' ? true : false)
-      formData.append('stage', this.form.standards)
-
-      if (this.form.vinAll !== '1') {
-        formData.append('vinFrom', this.form.vinStart)
-        formData.append('vinTo', this.form.vinEnd)
-      }
-      console.log(formData, '传给后台的数据')
-      // pdf(formData).then(response => {
-
-      //   this.loading = false
-      //   console.log(response, '返回的数据')
-      // }).catch(err => {
-
-      //   this.loading = false
-      // })
-
-      this.$axios({
-        methods: 'get',
-        url: 'https://www.zlzkyuxin.xyz/yuxin/demo/demo.pdf',
-        responseType: 'blob'
-      }).then((response) => {
-        console.log(response)
-        const content = response.data
-        const blob = new Blob([content]) // 构造一个blob对象来处理数据
-        const fileName = new Date().getTime() + '.zip' // 导出文件名
-        // 对于<a>标签，只有 Firefox 和 Chrome（内核） 支持 download 属性
-        // IE10以上支持blob但是依然不支持download
-        if ('download' in document.createElement('a')) { // 支持a标签download的浏览器
-          const link = document.createElement('a') // 创建a标签
-          link.download = fileName // a标签添加属性
-          link.style.display = 'none'
-          link.href = URL.createObjectURL(blob)
-          console.log(link.href, '下载文件地址为')
-          document.body.appendChild(link)
-          link.click() // 执行下载
-          URL.revokeObjectURL(link.href) // 释放url
-          document.body.removeChild(link) // 释放标签
-        } else { // 其他浏览器
-          navigator.msSaveBlob(blob, fileName)
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
+    downloading() {
+      this.postFile(false)
     },
-    check () {
+    check() {
       console.log(this.form, '检查前form数据')
       if (!this.form.standards) {
         this.$message.error('请选择排放阶段')
@@ -394,20 +228,122 @@ export default {
         this.$message.error('请上传打印模板')
         return false
       }
-      if ((!this.form.vinAll || this.form.vinAll === '0') &&
-        (!this.form.vinStart || !this.form.vinEnd)) {
+      if (
+        (!this.form.vinAll || this.form.vinAll === '0') &&
+        (!this.form.vinStart || !this.form.vinEnd)
+      ) {
         this.$message.error('请填写或选择VIN区间')
         return false
       }
       return true
+    },
+    postFile(type) {
+      let self = this
+      console.log(process.env.VUE_APP_BASE_API, '请求地址')
+      if (!this.check()) {
+        return
+      }
+      this.loading = true
+      const formData = new FormData()
+      formData.append('tempFile', this.form.sysAttachments1)
+      formData.append('vinFile', this.form.sysAttachments)
+      formData.append('allVin', this.form.vinAll === '1' ? 'true' : 'false')
+      formData.append('stage', this.form.standards)
+
+      if (this.form.vinAll !== '1') {
+        formData.append('vinFrom', this.form.vinStart)
+        formData.append('vinTo', this.form.vinEnd)
+      }
+      console.log(formData, '传给后台的数据')
+
+      // pdf生成压缩包 print打印
+      var url
+      if (type) {
+        url = process.env.VUE_APP_BASE_API + 'v1/epp/print'
+      } else {
+        url = process.env.VUE_APP_BASE_API + 'v1/epp/epp/pdf'
+      }
+      console.log(url, '请求地址')
+      this.$axios({
+        method: 'post',
+        url: url,
+        data: formData,
+        headers: {
+          Authorization: getToken()
+        },
+        responseType: 'blob'
+      })
+        .then(response => {
+          console.log(response)
+          this.loading = false
+          const content = response.data
+          let contentType = response.headers['content-type']
+          if (contentType.indexOf('application/json') !== -1) {
+
+            let reader = new FileReader(); // 创建读取文件对象
+            reader.addEventListener("loadend", function () { // 
+              let res = JSON.parse(reader.result); // 返回的数据
+              self.$message.error(res.msg)
+            });
+            reader.readAsText(content, 'utf-8'); // 设置读取的数据以及返回的数据类型为utf-8
+          } else {
+            const blob = new Blob([content]) // 构造一个blob对象来处理数据
+            let contentName = response.headers['content-disposition'] // 导出文件名
+            let arr = contentName.split('filename="')
+            let finalName = arr[1]
+            const fileName = finalName.substring(0, finalName.lastIndexOf('\"')) // 导出文件名
+            console.log(response.headers, '后台返回的头信息')
+            console.log(fileName, '后台返回的文件名')
+            // 对于<a>标签，只有 Firefox 和 Chrome（内核） 支持 download 属性
+            // IE10以上支持blob但是依然不支持download
+            if (type) { //pdf预览打印
+
+              // // 支持a标签download的浏览器
+              // const link = document.createElement('a') // 创建a标签
+              // link.download = fileName // a标签添加属性
+              // link.style.display = 'none'
+              // link.href = URL.createObjectURL(blob)
+
+              // document.body.appendChild(link)
+              // link.click() // 执行下载
+              // URL.revokeObjectURL(link.href) // 释放url
+              // document.body.removeChild(link) // 释放标签
+
+              let pdfurl = URL.createObjectURL(blob)
+              console.log(pdfurl, 'pdf预览地址')
+
+              window.open(`/pdfjs/web/viewer.html?file=${encodeURIComponent(pdfurl)}`)
+            } else {
+              if ('download' in document.createElement('a')) {
+                // 支持a标签download的浏览器
+                const link = document.createElement('a') // 创建a标签
+                link.download = fileName // a标签添加属性
+                link.style.display = 'none'
+                link.href = URL.createObjectURL(blob)
+
+                document.body.appendChild(link)
+                link.click() // 执行下载
+                URL.revokeObjectURL(link.href) // 释放url
+                document.body.removeChild(link) // 释放标签
+              } else {
+                // 其他浏览器
+                navigator.msSaveBlob(blob, fileName)
+              }
+            }
+          }
+        })
+        .catch(error => {
+          this.loading = false
+          console.log(error)
+        })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .container {
-  margin: 15px;
+  margin: '15px';
   .vin-end {
     float: right;
     padding-right: 12px;
