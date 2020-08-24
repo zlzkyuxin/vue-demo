@@ -32,10 +32,8 @@
           class="upload-demo"
           accept=".xlsx,.xls,docx,doc"
           action=""
-          :limit="1"
           :auto-upload="false"
           :on-change="fileUpload"
-          :on-exceed="exceedFunc"
           multiple
         >
           <el-button
@@ -61,10 +59,8 @@
           class="upload-demo"
           accept=".doc,.docx"
           action=""
-          :limit="1"
           :auto-upload="false"
           :on-change="fileUpload1"
-          :on-exceed="exceedFunc"
           multiple
         >
           <el-button
@@ -172,21 +168,29 @@ export default {
     }
   },
   methods: {
-    exceedFunc() {
-      this.$message({
-        showClose: true,
-        message: '警告，仅允许上传一个附件',
-        type: 'warning'
-      })
+    exceedFunc(file, fileList) {
+      console.log(file, fileList)
+      // this.$message({
+      //   showClose: true,
+      //   message: '警告，仅允许上传一个附件',
+      //   type: 'warning'
+      // })
+
     },
     //  文件上传
     fileUpload(file, fileList) {
+      if (fileList.length > 1) {
+        fileList.splice(0, 1)
+      }
       this.form.sysAttachments = file.raw
       console.log(file, '上传的文件')
       // console.log(fileList, '上传的文件list')
     },
     //  文件上传
     fileUpload1(file, fileList) {
+      if (fileList.length > 1) {
+        fileList.splice(0, 1)
+      }
       this.form.sysAttachments1 = file.raw
       console.log(file, '上传的文件')
       // console.log(fileList, '上传的文件list')
